@@ -1,15 +1,14 @@
 const week = ["日", "月", "火", "水", "木", "金", "土"];
 const today = new Date();
 // 月末だとずれる可能性があるため、1日固定で取得
-var showDate = new Date(today.getFullYear(), today.getMonth(), 1);
+const showDate = new Date(today.getFullYear(), today.getMonth(), 1);
 
 const prev = document.querySelector("#prev");
 const next = document.querySelector("#next");
 
-// 初期表示
-window.onload = function () {
+window.addEventListener("load", () => {
     showProcess(today, calendar);
-};
+});
 
 prev.addEventListener("click", () => {
     showDate.setMonth(showDate.getMonth() - 1);
@@ -22,40 +21,40 @@ next.addEventListener("click", () => {
 });
 
 // カレンダー表示
-function showProcess(date) {
-    var year = date.getFullYear();
-    var month = date.getMonth();
+const showProcess = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth();
     document.querySelector("#header").innerHTML =
         year + "年 " + (month + 1) + "月";
 
-    var calendar = createProcess(year, month);
+    const calendar = createProcess(year, month);
     document.querySelector("#calendar").innerHTML = calendar;
-}
+};
 
 // カレンダー作成
-function createProcess(year, month) {
+const createProcess = (year, month) => {
     // 曜日
-    var calendar = "<table><tr class='dayOfWeek'>";
-    for (var i = 0; i < week.length; i++) {
+    let calendar = "<table><tr class='dayOfWeek'>";
+    for (let i = 0; i < week.length; i++) {
         calendar += "<th>" + week[i] + "</th>";
     }
     calendar += "</tr>";
 
-    var count = 0;
+    let count = 0;
     // 月の初日の曜日（1:月, 2:火, 3:水, 4:木, 5:金, 6:土, 7:日）
-    var startDayOfWeek = new Date(year, month, 1).getDay();
+    const startDayOfWeek = new Date(year, month, 1).getDay();
     // 月の最終日
-    var endDate = new Date(year, month + 1, 0).getDate();
+    const endDate = new Date(year, month + 1, 0).getDate();
     // 先月の最終日
-    var lastMonthEndDate = new Date(year, month, 0).getDate();
+    const lastMonthEndDate = new Date(year, month, 0).getDate();
     // 何行構成のカレンダーか
-    var row = Math.ceil((startDayOfWeek + endDate) / week.length);
+    const row = Math.ceil((startDayOfWeek + endDate) / week.length);
 
     // 1行ずつ設定
-    for (var i = 0; i < row; i++) {
+    for (let i = 0; i < row; i++) {
         calendar += "<tr>";
         // j: 1colum単位で設定（0〜6）
-        for (var j = 0; j < week.length; j++) {
+        for (let j = 0; j < week.length; j++) {
             // i == 0: 「1行目」, startDayOfWeek: 「最初の曜日よりも前の曜日」のとき
             if (i == 0 && j < startDayOfWeek) {
                 /**
@@ -97,4 +96,4 @@ function createProcess(year, month) {
         calendar += "</tr>";
     }
     return calendar;
-}
+};
